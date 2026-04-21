@@ -71,6 +71,7 @@ main() {
     pic_index=$(echo $choice | cut -d. -f1)
     awww img ${DIR}/${PICS[$pic_index]} $awww_PARAMS
     wal -i ${DIR}/${PICS[$pic_index]} -n
+    cp "${DIR}/${PICS[$pic_index]}" "$HOME/.cache/current_wallpaper.jpg"
 }
 
 # Check if wofi is already running
