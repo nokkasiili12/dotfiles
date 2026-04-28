@@ -1,25 +1,25 @@
 {
-  "position": "top",
+  "position": "bottom",
   "margin-top": 0,
   "margin-bottom": 0,
   "modules-left": [
     "hyprland/workspaces"
   ],
-  "modules-center": [
-    "clock"
-  ],
   "modules-right": [
-    "custom/spotify",
     "bluetooth",
     "cpu",
     "pulseaudio",
     "battery",
+    "clock"
   ],
+  "modules-center": [
+    "custom/spotify",
+    ],
   "clock": {
     "interval": 60,
-    "format": "{:L%A %H:%M}",
-    "format-alt": "{:L%d %B W%V %Y}",
-    "tooltip": false,
+    "format": "{:%H:%M}",
+    "format-alt": "{:L%d %B %Y}",
+    "tooltip-format": "{:L%d %B %Y}",
     "max-length": 25
   },
   "hyprland/workspaces": {
@@ -33,6 +33,7 @@
     "return-type": "json",
     "exec": "~/.config/waybar/modules/spotify.sh",
     "exec-if": "pgrep spotify_player",
+    "on-click": "hyprctl dispatch focuswindow \"title:spotify\"",
     "escape": true
   },
   "cpu": {
