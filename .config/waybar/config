@@ -17,9 +17,8 @@
     ],
   "clock": {
     "interval": 60,
-    "format": "{:%H:%M}",
-    "format-alt": "{:L%d %B %Y}",
-    "tooltip-format": "{:L%d %B %Y}",
+    "format": "{:%a %d/%m/%Y ~ %H:%M}",
+    "tooltip": false,
     "max-length": 25
   },
   "hyprland/workspaces": {

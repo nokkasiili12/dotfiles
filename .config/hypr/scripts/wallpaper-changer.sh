@@ -1,88 +1,32 @@
 #!/bin/bash
+wall_dir="${HOME}/Wallpapers/"
+cacheDir="${HOME}/.cache/jp/${theme}"
+rofi_command="rofi -x11 -dmenu -theme ${HOME}/.config/rofi/wallSelect.rasi -theme-str ${rofi_override}"
 
-# WALLPAPERS PATH
-DIR=$HOME/Wallpapers/
-
-# Transition config (type awww img --help for more settings
-FPS=320
-TYPE="grow"
-DURATION=2
-
-# wofi window config (in %)
-WIDTH=20
-HEIGHT=30
-
-awww_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION"
-
-PICS=($(ls ${DIR} | grep -e ".jpg$" -e ".jpeg$" -e ".png$" -e ".gif$"))
-
-RANDOM_PIC=${PICS[$RANDOM % ${#PICS[@]}]}
-RANDOM_PIC_NAME="${#PICS[@]}. random"
-
-# wofi STYLES
-CONFIG="$HOME/.config/wofi/config"
-STYLE="$HOME/.config/wofi/style.css"
-COLORS="$HOME/.cache/wal/colors-wofi-dark.rasi"
-
-# to check if swaybg is running
-
-if [[ $(pidof swaybg) ]]; then
-    pkill swaybg
+if [ ! -d "${cacheDir}" ]; then
+    mkdir -p "${cacheDir}"
 fi
 
-## wofi Command
-wofi_command="wofi --show dmenu \
-			--prompt choose...
-			--conf $CONFIG --style $STYLE --color $COLORS \
-			--width=$WIDTH% --height=$HEIGHT% \
-			--cache-file=/dev/null \
-			--hide-scroll --no-actions \
-			--matching=fuzzy"
+physical_monitor_size=24
+monitor_res=$(hyprctl monitors | grep -A2 Monitor | head -n 2 | awk '{print $1}' | grep -oE '^[0-9]+')
+dotsperinch=$(echo "scale=2; $monitor_res / $physical_monitor_size" | bc | xargs printf "%.0f")
+monitor_res=$(($monitor_res * $physical_monitor_size / $dotsperinch))
 
-menu() {
-    # Here we are looping in the PICS array that is composed of all images in the $DIR
-    # folder
-    for i in ${!PICS[@]}; do
-        # keeping the .gif to make sue you know it is animated
-        if [[ -z $(echo ${PICS[$i]} | grep .gif$) ]]; then
-            printf "$i. $(echo ${PICS[$i]} | cut -d. -f1)\n" # n°. <name_of_file_without_identifier>
-        else
-            printf "$i. ${PICS[$i]}\n"
+rofi_override="element-icon{size:${monitor_res}px;border-radius:0px;}"
+
+for imagen in "$wall_dir"/*.{jpg,jpeg,png,webp}; do
+    if [ -f "$imagen" ]; then
+        nombre_archivo=$(basename "$imagen")
+        if [ ! -f "${cacheDir}/${nombre_archivo}" ]; then
+            convert -strip "$imagen" -thumbnail 500x500^ -gravity center -extent 500x500 "${cacheDir}/${nombre_archivo}"
         fi
-    done
-
-    printf "$RANDOM_PIC_NAME"
-}
-
-awww query || awww-daemon
-
-main() {
-    choice=$(menu | ${wofi_command})
-
-    # no choice case
-    if [[ -z $choice ]]; then return; fi
-
-    # random choice case
-    if [ "$choice" = "$RANDOM_PIC_NAME" ]; then
-        awww img ${DIR}/${RANDOM_PIC} $awww_PARAMS
-        return
     fi
+done
 
-    pic_index=$(echo $choice | cut -d. -f1)
-    awww img ${DIR}/${PICS[$pic_index]} $awww_PARAMS
-    wal -i ${DIR}/${PICS[$pic_index]} -n
-    cp "${DIR}/${PICS[$pic_index]}" "$HOME/.cache/current_wallpaper.jpg"
-}
+wall_selection=$(find "${wall_dir}" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -exec basename {} \; | sort | while read -r A; do echo -en "$A\x00icon\x1f""${cacheDir}"/"$A\n"; done | $rofi_command)
 
-# Check if wofi is already running
-if pidof wofi >/dev/null; then
-    killall wofi
-    exit 0
-else
-    main
-fi
+[[ -n "$wall_selection" ]] || exit 1
+awww img ${wall_dir}/${wall_selection} --transition-type any --transition-duration 2 --transition-fps 320
+wal -i ${wall_dir}/${wall_selection} -n
 
-# Uncomment to launch something if a choice was made
-# if [[ -n "$choice" ]]; then
-# Restart Waybar
-# fi
+exit 0
