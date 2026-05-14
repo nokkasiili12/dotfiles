@@ -32,7 +32,7 @@
     "return-type": "json",
     "exec": "~/.config/waybar/modules/spotify.sh",
     "exec-if": "pgrep spotify_player",
-    "on-click": "hyprctl dispatch focuswindow \"title:spotify\"",
+    "on-click": "hyprctl dispatch 'hl.dsp.focus({ window = \"title:spotify\" })'",
     "escape": true
   },
   "cpu": {

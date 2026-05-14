@@ -19,6 +19,7 @@ hl.bind(mainMod .. " + CTRL + SPACE", hl.dsp.exec_cmd(wallpaperChanger))
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(screenshot))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(toggleLang))
+hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd(reloadWaybar))
 
 hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
