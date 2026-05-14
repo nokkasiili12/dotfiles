@@ -10,7 +10,8 @@
     "cpu",
     "pulseaudio",
     "battery",
-    "clock"
+    "clock",
+    "custom/hyprlock"
   ],
   "modules-center": [
     "custom/spotify",
@@ -19,7 +20,7 @@
     "interval": 60,
     "format": "{:%a %d/%m/%Y ~ %H:%M}",
     "tooltip": false,
-    "max-length": 25
+    "max-length": 30
   },
   "hyprland/workspaces": {
     "format": "{name}",
@@ -34,6 +35,11 @@
     "exec-if": "pgrep spotify_player",
     "on-click": "hyprctl dispatch 'hl.dsp.focus({ window = \"title:spotify\" })'",
     "escape": true
+  },
+  "custom/hyprlock": {
+    "format": "",
+    "on-click": "hyprlock",
+    "tooltip": false
   },
   "cpu": {
     "interval": 5,
