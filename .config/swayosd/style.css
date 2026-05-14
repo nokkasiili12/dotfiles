@@ -1,0 +1,28 @@
+@import "../../.cache/wal/colors-waybar.css";
+
+window {
+    background: @background;
+    border-radius: 10px;
+    border: 1px solid @color7;
+    padding: 0px 2px;
+}
+
+label {
+    font-family: 'JetBrainsMono Nerd Font';
+    font-size: 14pt;
+    color: @foreground;
+}
+
+progressbar {
+    min-height: 8px;
+    border-radius: 999px;
+    background: @color0;
+}
+
+progress {
+    background: linear-gradient(90deg, @color4, @color5);
+}
+
+image {
+    color: @foreground;
+}
