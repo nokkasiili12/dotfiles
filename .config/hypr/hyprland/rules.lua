@@ -29,7 +29,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	match = { title = "floating_center" },
+	match = { title = "floating-center" },
 
 	float = true,
 	center = true,
@@ -38,6 +38,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "spotify",
 	match = { title = "spotify" },
 
 	float = true,
@@ -50,3 +51,5 @@ hl.window_rule({
 	match = { class = "^(firefox)$" },
 	opacity = "1.0 override 0.96 override",
 })
+
+hl.layer_rule({ match = { namespace = "swayosd" }, animation = "slide" })

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 wall_dir="${HOME}/Wallpapers/"
 cacheDir="${HOME}/.cache/jp/${theme}"
 rofi_command="rofi -x11 -dmenu -theme ${HOME}/.config/rofi/wallSelect.rasi -theme-str ${rofi_override}"
@@ -26,7 +27,12 @@ done
 wall_selection=$(find "${wall_dir}" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -exec basename {} \; | sort | while read -r A; do echo -en "$A\x00icon\x1f""${cacheDir}"/"$A\n"; done | $rofi_command)
 
 [[ -n "$wall_selection" ]] || exit 1
+
 awww img ${wall_dir}/${wall_selection} --transition-type any --transition-duration 2 --transition-fps 320
 wal -i ${wall_dir}/${wall_selection} -n
+cp "${wall_dir}/${wall_selection}" "$HOME/.cache/current_wallpaper.jpg"
+
+pkill swayosd-server
+swayosd-server &
 
 exit 0
