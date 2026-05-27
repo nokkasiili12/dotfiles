@@ -7,5 +7,10 @@ toggleLang = "~/.config/hypr/scripts/toggle-layout.sh"
 browser = "firefox"
 spotify = "foot --title spotify spotify_player"
 screenshot = "hyprshot --mode region --clipboard-only"
+
 volumeUp = "swayosd-client --output-volume +2"
 volumeDown = "swayosd-client --output-volume -2"
+volumeMute = "swayosd-client --output-volume mute-toggle"
+
+brightnessUp = "swayosd-client --brightness raise"
+brightnessDown = "swayosd-client --brightness lower"
